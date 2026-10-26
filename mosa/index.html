@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mossa: Groepsdruk, Keuses en Grense - Storieboek</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+        :root {
+            --hope-yellow: #FFD166;
+            --grass-green: #06D6A0;
+            --sky-blue: #118AB2;
+            --accent-pink: #EF476F;
+            --dark-text: #073B4C;
+            --light-bg: #F9FDFB;
+            --page-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+            background-color: #e0e0e0;
+            color: var(--dark-text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .book-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--page-bg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .no-print {
+            text-align: center;
+            padding: 20px;
+            background: var(--sky-blue);
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .btn-download {
+            background-color: white;
+            color: var(--sky-blue);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            background-color: var(--hope-yellow);
+            color: var(--dark-text);
+        }
+
+        /* Page Styling */
+        .page {
+            padding: 50px;
+            min-height: 900px;
+            box-sizing: border-box;
+            position: relative;
+            background: var(--page-bg);
+            border-bottom: 1px solid #eee;
+        }
+        .page:last-child { border-bottom: none; }
+
+        /* Cover Page */
+        .cover {
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 50%, #90EE90 100%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 1000px;
+        }
+        .cover img {
+            max-width: 450px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin: 30px 0;
+            border: 8px solid white;
+        }
+        .cover h1 {
+            font-size: 3.5rem;
+            color: var(--dark-text);
+            margin: 10px 0;
+            text-shadow: 2px 2px 0px white;
+        }
+        .cover h2 {
+            font-size: 1.8rem;
+            color: var(--accent-pink);
+            margin: 0;
+            background: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        .cover .slogan {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--sky-blue);
+            margin-top: 20px;
+        }
+
+        /* Content Pages */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 4px dashed var(--hope-yellow);
+            padding-bottom: 15px;
+        }
+        .page-header h2 {
+            color: var(--sky-blue);
+            font-size: 2.2rem;
+            margin: 0;
+        }
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-weight: 800;
+            color: #ccc;
+            font-size: 1.2rem;
+        }
+
+        .story-img {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 5px solid var(--hope-yellow);
+        }
+
+        .story-text {
+            font-size: 1.3rem;
+            text-align: justify;
+            margin: 20px 0;
+        }
+        .dialogue {
+            margin: 15px 0;
+            padding: 15px 20px;
+            background: #f4f9f9;
+            border-radius: 12px;
+            border-left: 6px solid var(--grass-green);
+            font-size: 1.2rem;
+        }
+        .character {
+            font-weight: 800;
+            color: var(--accent-pink);
+            font-size: 1.3rem;
+        }
+
+        /* Acronym */
+        .acronym {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 30px 0;
+        }
+        .acronym-item {
+            background: var(--light-bg);
+            padding: 15px 5px;
+            border-radius: 10px;
+            text-align: center;
+            border: 3px solid var(--grass-green);
+        }
+        .acronym-item .letter {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-pink);
+            line-height: 1;
+        }
+        .acronym-item .word {
+            font-weight: 700;
+            color: var(--dark-text);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Activities */
+        .scenario-card {
+            background: var(--light-bg);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #e0e0e0;
+            font-size: 1.2rem;
+        }
+        .scenario-card p { margin: 0; flex: 1; font-weight: 600; }
+        .choice-btns { display: flex; gap: 15px; }
+        .btn-ja, .btn-nee {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 800;
+            border: none;
+            font-size: 1.1rem;
+        }
+        .btn-ja { background: var(--grass-green); color: white; }
+        .btn-nee { background: var(--accent-pink); color: white; }
+
+        .star-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .star-svg {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+        }
+
+        .path-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            text-align: center;
+            gap: 20px;
+        }
+        .path-box {
+            width: 45%;
+            padding: 30px 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+        .path-nee { background: #ffe5ec; color: var(--accent-pink); border: 4px dashed var(--accent-pink); }
+        .path-ja { background: #e0fbfc; color: var(--sky-blue); border: 4px dashed var(--sky-blue); }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--dark-text);
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print { display: none; }
+            .book-container { box-shadow: none; border-radius: 0; max-width: 100%; }
+            .page { 
+                page-break-after: always; 
+                min-height: 100vh; 
+                border-bottom: none;
+                padding: 40px;
+            }
+            .page:last-child { page-break-after: auto; }
+            .cover { min-height: 100vh; }
+            .story-img { max-width: 500px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <button class="btn-download" onclick="window.print()">🖨️ Druk / Stoor as PDF</button>
+    <p style="margin: 10px 0 0; font-size: 0.9rem;">Wenk: Kies "Stoor as PDF" in jou drukker-instellings om die boekie digitaal te deel.</p>
+</div>
+
+<div class="book-container">
+
+    <!-- COVER PAGE -->
+    <div class="page cover">
+        <h2>Groepsdruk, Keuses en Grense</h2>
+        <img src="C:\Users\Jan Venter\Desktop\mosa\1793033784.png" alt="Mossa die vrolike mossie" class="cover-img" onerror="this.outerHTML='<div style=\'font-size: 8rem; margin: 20px 0;\'></div>'">
+        <div class="slogan">✨ Mossa bring HOOP! ✨</div>
+        <p style="margin-top: 50px; font-weight: 600; color: #555;">'n Publikasie van VVA (Versorg, Ontwikkel, Bemagtig)</p>
+    </div>
+
+    <!-- PAGE 1: Facilitator Guide & About Mossa -->
+    <div class="page">
+        <div class="page-header">
+            <h2>📖 Riglyne vir Fasiliteerders</h2>
+        </div>
+        <p class="story-text">Hierdie boekie is ontwerp vir kinders tussen <strong>7 en 12 jaar oud</strong>. Die doel is om gesprekke rondom groepsdruk, keuses en grense te fasiliteer.</p>
+        <p class="story-text"><strong>Jou rol:</strong> Moedig kinders aan om hul eie waardes te verstaan en 'nee' te sê wanneer hulle ongemaklik voel. Gebruik die storie, aktiwiteite en poppespel as hulpmiddels. Moenie druk uitoefen nie — luister empaties en moedig selfvertroue aan.</p>
+        <p class="story-text" style="text-align: center; font-style: italic; color: var(--sky-blue);">VVA se Missie: Versorg, Ontwikkel en Bemagtig.</p>
+
+        <div class="page-header" style="margin-top: 50px;">
+            <h2>🌟 Wie is Mossa?</h2>
+        </div>
+        <p class="story-text">Mossa is 'n vrolike mossie wat liefdevol, ondersteunend en vriendelik is. Hy help kinders om te onthou dat hulle altyd 'n keuse het.</p>
+        
+        <h3 style="text-align: center; color: var(--accent-pink); font-size: 1.5rem;">Waarvoor staan MOSSA?</h3>
+        <div class="acronym">
+            <div class="acronym-item"><div class="letter">M</div><div class="word">Moed</div></div>
+            <div class="acronym-item"><div class="letter">O</div><div class="word">Omgee</div></div>
+            <div class="acronym-item"><div class="letter">S</div><div class="word">Selfvertroue</div></div>
+            <div class="acronym-item"><div class="letter">S</div><div class="word">Standvastigheid</div></div>
+            <div class="acronym-item"><div class="letter">A</div><div class="word">Aanvaarding</div></div>
+        </div>
+
+        <div class="page-number">1</div>
+    </div>
+
+    <!-- PAGE 2: Story Part 1 -->
+    <div class="page">
+        <div class="page-header">
+            <h2>📚 Die Storie: Mossa se Groot Keuse</h2>
+        </div>
+        <p class="story-text">Mossa, die vrolike mossie, het een helder oggend saam met sy maats in die veld gespeel. Die son het geskyn, die wind het deur die lang gras gewaai, en hy het gesing soos altyd:</p>
+        <p class="story-text" style="text-align: center; font-style: italic; color: var(--grass-green); font-size: 1.4rem;">“Ek vlieg vry en ek kies my pad, ek sê wat reg is met moed in my hart!”</p>
+        
+        <p class="story-text">Sy maats, Kiki die kuiken, Binkie die bokkie en Koekoek die kleurvolle koekoek, het almal saamgespeel. Tannie Uil het hulle gegroet van haar tak af: <em>“Geniet julle dag, en onthou: julle keuses wys wie julle is!”</em></p>
+        <img src="C:\Users\Jan Venter\Desktop\mosa\1793034220.png" alt="Mossa and his friends in the field" class="story-img">
+        <p class="story-text">Later die dag, toe Mossa sy oggendlied nog neurie, het Koekoek 'n voorstel gehad.</p>
+        
+        <div class="dialogue">
+            <span class="character">Koekoek:</span> “Kom ons speel ’n nuwe speletjie — wie’s dapper genoeg om oor die pad te vlieg en ’n lekker happie uit daardie mens se piekniekmandjie te steel?”
+        </div>
+        <div class="dialogue">
+            <span class="character">Kiki:</span> “Maar dis gevaarlik… daardie mense het ’n hond!”
+        </div>
+        <div class="dialogue">
+            <span class="character">Koekoek:</span> “Dis net vir pret! Mossa, jy’s tog altyd so braaf — wys vir ons!”
+        </div>
+        
+        <p class="story-text">Mossa het eers getwyfel, maar toe hy die piekniekmandjie sien en al die lekker eetgoed, het sy hart vinniger begin klop. Dis nie reg om iemand anders se kos te vat nie… maar almal het na hom gekyk. Hy het nie geweet wat om te doen nie.</p>
+
+        <div class="page-number">2</div>
+    </div>
+
+    <!-- PAGE 3: Story Part 2 (Saying NO) -->
+    <div class="page">
+        <div class="page-header">
+            <h2> Mossa sê NEE!</h2>
+        </div>
+        
+        <div class="dialogue">
+            <span class="character">Binkie:</span> “Ons sal jou nie uitlag as jy bang is nie…”
+        </div>
+        <div class="dialogue">
+            <span class="character">Koekoek:</span> <em>(glimlag skalks)</em> “Of is jy nou sommer 'n bangbroek? Toe, kom nou Mossa, ons weet jy kan!”
+        </div>
+        
+        <p class="story-text">Mossa het diep asemgehaal. Hy het ferm gestaan en gesê:</p>
+        <div class="dialogue" style="border-left-color: var(--grass-green); background: #e6f9f3; font-size: 1.4rem;">
+            <span class="character">Mossa:</span> “Nee… ek doen nie dinge wat verkeerd is nie. Julle kan gaan, maar ek sê <strong>NEE</strong>.”
+			<img src="C:\Users\Jan Venter\Desktop\mosa\1793034313.png" alt="Mossa saying NO to peer pressure" class="story-img">
+        </div>
+        
+        <p class="story-text">Die ander het hom ’n oomblik stil aangestaar. Kiki en Binkie het vinnig by hom aangesluit.</p>
+        <div class="dialogue">
+            <span class="character">Kiki:</span> “Ek stem saam. ’n Speletjie is nie meer lekker as iemand seer kry of iets gesteel word nie.”
+        </div>
+        
+        <p class="story-text">Koekoek het gegrinnik en toe weggevlieg: “Julle is boring!”</p>
+        
+        <p class="story-text">Later die middag het Mossa hom alleen langs die gras gevind — Koekoek het wel oor die pad gevlieg, is deur die hond gejaag en is byna opgevreet. Hy was geskok en sy lyfie was baie seer.</p>
+
+        <div class="page-number">3</div>
+    </div>
+
+    <!-- PAGE 4: Story Part 3 (Resolution) -->
+    <div class="page">
+        <div class="page-header">
+            <h2>🤝 Vriendskap en Hoop</h2>
+        </div>
+        
+        <div class="dialogue">
+            <span class="character">Mossa:</span> “Is jy oukey, Koekoek?”
+        </div>
+        <div class="dialogue">
+            <span class="character">Koekoek:</span> <em>(stil)</em> “Ek’s jammer… jy was reg. Jy’s sterker as ek gedink het.”
+			<img src="C:\Users\Jan Venter\Desktop\mosa\1793034702.png" alt="Mossa comforting his friend" class="story-img">
+        </div>
+        
+        <p class="story-text">Tannie Uil het hulle later almal bymekaar geroep.</p>
+        <div class="dialogue" style="border-left-color: var(--sky-blue);">
+            <span class="character">Tannie Uil:</span> “Dapperheid is nie om iets gevaarliks te doen nie. Dapperheid is om nee te sê wanneer almal ja sê. En Mossa het ons almal daaraan herinner.”
+        </div>
+        
+        <p class="story-text">Mossa het skaam geglimlag, maar ook trots gevoel. Hy het geweet: <strong>Jy verloor nie jou vriende as jy nee sê nie. Jy wys net wie jy werklik is.</strong></p>
+
+        <div class="page-header" style="margin-top: 60px;">
+            <h2>💬 Besprekingspunte</h2>
+        </div>
+        <ol class="story-text">
+            <li>Wat wou Koekoek hê die ander moes doen?</li>
+            <li>Waarom het Mossa eers getwyfel?</li>
+            <li>Hoe sou jy gevoel het as jy in Mossa se skoene was?</li>
+            <li>Met wie kan jy gaan praat as jy nie seker is wat om te doen nie?</li>
+        </ol>
+
+        <div class="page-number">4</div>
+    </div>
+
+    <!-- PAGE 5: Puppet Show -->
+    <div class="page">
+        <div class="page-header">
+            <h2>🎭 Poppekas Teks: Mossa Sê NEE</h2>
+        </div>
+        <p class="story-text"><strong>Oudergroep:</strong> 7 – 12 jaar | <strong>Duur:</strong> ± 8 minute</p>
+        <p class="story-text"><strong>Karakters:</strong> Mossa, Koekoek, Kiki, Binkie, Tannie Uil.</p>
+        
+        <h3 style="color: var(--sky-blue);"> Toneel 1: In die Veld</h3>
+        <div class="dialogue">
+            <span class="character">Mossa:</span> <em>(singend)</em> “Ek vlieg vry en ek kies my pad, Ek sê wat reg is met moed in my hart!”
+        </div>
+        <div class="dialogue">
+            <span class="character">Koekoek:</span> “Wys ons dan hoe dapper jy is! Daar anderkant die pad is ’n piekniek. Kom ons vat iets uit die mandjie – net vir pret!”
+        </div>
+        <div class="dialogue" style="border-left-color: var(--grass-green); background: #e6f9f3;">
+            <span class="character">Mossa:</span> <em>(ferm)</em> “Ek sê NEE. Ek gaan nie iets steel nie. Dis nie wie ek is nie.”
+        </div>
+        <div class="dialogue">
+            <span class="character">Kiki & Binkie:</span> “Ons sê ook nee!”
+        </div>
+
+        <h3 style="color: var(--sky-blue); margin-top: 30px;"> Toneel 2 & 3: Versoening en Wysheid</h3>
+        <div class="dialogue">
+            <span class="character">Koekoek:</span> “Daai hond het my amper gevang… Ek’s jammer, Mossa. Jy was reg.”
+        </div>
+        <div class="dialogue">
+            <span class="character">Tannie Uil:</span> “Dapperheid is om NEE te sê, al is jy alleen. Mossa bring HOOP!”
+        </div>
+        <p class="story-text" style="text-align: center;"><em>(Almal sing saam en glimlag. Einde.)</em></p>
+
+        <div class="page-number">5</div>
+    </div>
+
+    <!-- PAGE 6: Activities -->
+    <div class="page">
+        <div class="page-header">
+            <h2>🎨 Aktiwiteite</h2>
+        </div>
+        
+        <h3 style="color: var(--accent-pink);">Aktiwiteit 1: "Ja of Nee?" Besluitspel</h3>
+        <p class="story-text"><strong>Doel:</strong> Help kinders om situasies te lees en “nee” te sê vir groepsdruk.</p>
+        
+        <div class="scenario-card">
+            <p>1. Iemand vra jou om te lieg vir jou onderwyser.</p>
+            <div class="choice-btns"><button class="btn-ja">JA</button><button class="btn-nee">NEE</button></div>
+        </div>
+        <div class="scenario-card">
+            <p>2. Jou vriende wil hê jy moet oor iemand spot.</p>
+            <div class="choice-btns"><button class="btn-ja">JA</button><button class="btn-nee">NEE</button></div>
+        </div>
+        <div class="scenario-card">
+            <p>3. Almal lag, maar jy voel sleg oor wat gebeur het.</p>
+            <div class="choice-btns"><button class="btn-ja">JA</button><button class="btn-nee">NEE</button></div>
+        </div>
+
+        <h3 style="color: var(--accent-pink); margin-top: 40px;">Aktiwiteit 2: Mossa se Moed-Ster</h3>
+        <p class="story-text"><strong>Doel:</strong> Bou selfvertroue. Laat elke kind ’n groot ster uitsny en inkleur. Skryf in die middel: <em>“Ek sê NEE as iets verkeerd voel.”</em></p>
+        
+        <div class="star-container">
+            <svg class="star-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="100,10 125,75 195,80 140,125 160,190 100,155 40,190 60,125 5,80 75,75" fill="#FFD166" stroke="#EF476F" stroke-width="4"/>
+                <text x="100" y="100" font-family="Nunito, sans-serif" font-size="12" font-weight="800" fill="#073B4C" text-anchor="middle"></text>
+                <text x="100" y="120" font-family="Nunito, sans-serif" font-size="12" font-weight="800" fill="#073B4C" text-anchor="middle"></text>
+            </svg>
+        </div>
+
+        <h3 style="color: var(--accent-pink);">Aktiwiteit 3: My Keuse, My Stem</h3>
+        <p class="story-text"><strong>Doel:</strong> Versterk keuse-bewustheid. Teken 'n pad met twee rigtings.</p>
+		
+        <div class="path-container">
+            <div class="path-box path-nee">
+                🛑 NEE<br>
+                <small style="font-size: 1rem; font-weight: 600;">(Ek kies wat reg is)</small>
+            </div>
+            <div class="path-box path-ja">
+                ✅ JA<br>
+                <small style="font-size: 1rem; font-weight: 600;">(Ek stem saam / doen mee)</small>
+            </div>
+        </div>
+<img src="C:\Users\Jan Venter\Desktop\mosa\my choice my voice.png" alt="Mossa die vrolike mossie" class="cover-img" onerror="this.outerHTML='<div style=\'font-size: 8rem; margin: 20px 0;\'></div>'">
+
+<h3 style="color: var(--accent-pink);">Aktiwiteit 4: Kleur in</h3>
+        <p class="story-text"><strong>Doel:</strong> Kleur die prent in en plak dit teen jou muur om die lesse te onthou</p>
+		<img src="C:\Users\Jan Venter\Desktop\mosa\kleur in.png" alt="Mossa die vrolike mossie" class="cover-img" onerror="this.outerHTML='<div style=\'font-size: 8rem; margin: 20px 0;\'></div>'"> 
+
+        <div class="page-number">6</div>
+    </div>
+
+    <footer>
+        <p style="font-size: 1.5rem; margin: 0;">🌟 <strong>Mossa bring hoop!</strong> 🌟</p>
+        <p style="margin: 10px 0 0;">'n Publikasie van VVA (Versorg, Ontwikkel, Bemagtig) © 2026</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
